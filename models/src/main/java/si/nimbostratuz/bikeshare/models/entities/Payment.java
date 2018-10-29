@@ -4,6 +4,7 @@ package si.nimbostratuz.bikeshare.models.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity(name = "payment")
@@ -34,8 +35,8 @@ public class Payment {
         @Column(name = "ride_id", nullable = false)
         private Integer rideId;
 
-        //  Payment amount in cents.
+        //  Payment amount
         @Column(nullable = false)
-        private Integer amount;
+        private BigDecimal amount;
 
 }

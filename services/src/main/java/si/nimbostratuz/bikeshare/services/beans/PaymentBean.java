@@ -1,4 +1,4 @@
-package si.nimbostratuz.bikeshare.services;
+package si.nimbostratuz.bikeshare.services.beans;
 
 import lombok.extern.java.Log;
 import si.nimbostratuz.bikeshare.models.entities.Payment;

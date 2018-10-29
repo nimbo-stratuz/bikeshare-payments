@@ -4,6 +4,7 @@
         <non-jta-data-source>jdbc/BikesharePaymentsDS</non-jta-data-source>
 
         <class>si.nimbostratuz.bikeshare.models.entities.Payment</class>
+        <class>si.nimbostratuz.bikeshare.models.entities.User</class>
 
         <properties>
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>

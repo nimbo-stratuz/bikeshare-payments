@@ -1,4 +1,4 @@
-package si.nimbostratuz.bikeshare.services;
+package si.nimbostratuz.bikeshare.services.beans;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
