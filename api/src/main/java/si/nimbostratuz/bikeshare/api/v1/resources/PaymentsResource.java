@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response;
 
 
 @ApplicationScoped
-@Path("bicycles")
+@Path("payments")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class PaymentsResource {
@@ -35,7 +35,6 @@ public class PaymentsResource {
 
     @POST
     public Response createPayment(Payment payment) {
-
         return Response.ok(paymentBean.create(payment)).build();
     }
 

@@ -2,8 +2,10 @@ package si.nimbostratuz.bikeshare.services.beans;
 
 import lombok.extern.java.Log;
 import si.nimbostratuz.bikeshare.models.entities.Payment;
+import si.nimbostratuz.bikeshare.models.entities.User;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.NotFoundException;
@@ -15,6 +17,8 @@ import java.util.List;
 @Log
 @ApplicationScoped
 public class PaymentBean extends EntityBean<Payment> {
+    @Inject
+    private UserBean userBean;
 
     public List<Payment> getAll() {
 
@@ -39,10 +43,17 @@ public class PaymentBean extends EntityBean<Payment> {
         try {
             beginTx();
 
-            // TODO - subtract and add amount to specific User' accounts?
+            // Get users 'from' & 'to' and subtract/add payment amount to their funds
+            User from = em.find(User.class, payment.getFromUserId());
+            User to = em.find(User.class, payment.getToUserId());
+
+            from.setFunds(from.getFunds().subtract(payment.getAmount()));
+            to.setFunds(to.getFunds().add(payment.getAmount()));
+            userBean.update(payment.getFromUserId(), from);
+            userBean.update(payment.getToUserId(), to);
+
 
             payment.setDate(Date.from(Instant.now()));
-
             em.persist(payment);
 
             commitTx();
