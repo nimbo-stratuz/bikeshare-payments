@@ -5,17 +5,17 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 
-@Entity(name = "user")
+@Entity(name = "bikeshare_user")
 @Data
 @NamedQueries(value = {
         @NamedQuery(
                 name = "User.getAll",
-                query = "SELECT u FROM user u"
+                query = "SELECT u FROM bikeshare_user u"
         )
 })
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -27,11 +27,11 @@ public class User {
     private String lastName;
 
     @Column(nullable = false)
-    private char password;
+    private String password;
 
-    // If the user is only using the service - false, if he is also renting a bicycle - true
+//     If the user is only using the service - false, if he is also renting a bicycle - true
     @Column(name = "is_renting", nullable = false)
-    private boolean isRenting;
+    private Boolean isRenting;
 
     @Column(nullable = false)
     private BigDecimal funds;

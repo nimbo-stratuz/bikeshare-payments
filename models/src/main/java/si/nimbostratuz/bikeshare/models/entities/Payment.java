@@ -38,5 +38,4 @@ public class Payment {
         //  Payment amount
         @Column(nullable = false)
         private BigDecimal amount;
-
 }
