@@ -4,12 +4,47 @@ kumuluzee:
     name: dev
   version: 1.0.0
   server:
-    base-url: http://localhost:8081
+    base-url: http://localhost:8080
     http:
-      port: 8081
+      port: 8080
   datasources:
   - jndi-name: jdbc/BikesharePaymentsDS
-    connection-url: jdbc:postgresql://localhost:5433/bikeshare-payments
+    connection-url: jdbc:postgresql://localhost:5432/bikeshare-payments
     username: postgres
     password: postgres
     max-pool-size: 20
+
+  config:
+    etcd:
+      hosts: http://localhost:2379
+
+  discovery:
+    etcd:
+      hosts: http://localhost:2379
+
+  health:
+    logs:
+      enabled: true
+      level: FINE
+      period-s: 1
+    servlet:
+      mapping: /health
+      enabled: true
+    checks:
+      data-source-health-check:
+        jndi-name: jdbc/BikesharePaymentsDS
+      etcd-health-check:
+        connection-url: http://localhost:2379/health
+  metrics:
+    web-instrumentation:
+    - name: metrics-endpoint
+      url-pattern: /metrics/*
+      status-codes: "200, 500"
+    - name: prometheus-endpoint
+      url-pattern: /prometheus/*
+
+app-properties:
+  external-services:
+    enabled: true
+  rest-config:
+    string-property: value
