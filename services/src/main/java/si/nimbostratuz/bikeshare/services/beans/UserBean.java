@@ -49,15 +49,24 @@ public class UserBean extends  EntityBean<User> {
     public User update(Integer id, User User) {
 
         User originalUser = this.get(id);
+        boolean commit = true;
 
         try {
-            beginTx();
+            if (em.getTransaction().isActive()){
+                // If a transaction allready exists
+                commit = false;
+            } else {
+                beginTx();
+            }
+
             User.setId(originalUser.getId());
             User = em.merge(User);
-            commitTx();
+            if (commit)
+                commitTx();
         } catch (Exception e) {
             rollbackTx();
             log.throwing(UserBean.class.getName(), "update", e);
+            throw new BadRequestException("User update failed.");
         }
 
         return User;
