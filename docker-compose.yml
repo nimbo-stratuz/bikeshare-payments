@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  db-pgsql:
+  bikeshare-payments.db:
     image: postgres:alpine
     restart: always
     ports:
@@ -10,3 +10,32 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: bikeshare-payments
+
+  bikeshare-payments.service:
+    build: .
+    ports:
+    #       left is outside, right is inside container
+    - 8080:8080
+    environment:
+      KUMULUZEE_SERVER_BASEURL: http://bikeshare-payments.service:8080
+      KUMULUZEE_DATASOURCES0_CONNECTIONURL: jdbc:postgresql://bikeshare-payments.db:5432/bikeshare-payments
+      KUMULUZEE_CONFIG_ETCD_HOSTS: http://etcd:2379
+      KUMULUZEE_DISCOVERY_ETCD_HOSTS: http://etcd:2379
+      KUMULUZEE_HEALTH_CHECKS_ETCDHEALTHCHECK_CONNECTIONURL: http://etcd:2379/health
+    depends_on:
+    - bikeshare-payments.db
+    - etcd
+
+  etcd:
+    image: quay.io/coreos/etcd
+    ports:
+    - 2379:2379
+    command: >-
+      /usr/local/bin/etcd
+      -name node1
+      -advertise-client-urls http://etcd:2379
+      -listen-client-urls http://0.0.0.0:2379
+      -initial-advertise-peer-urls http://etcd:2380
+      -listen-peer-urls http://0.0.0.0:2380
+      -initial-cluster node1=http://etcd:2380
+      -cors="*"
