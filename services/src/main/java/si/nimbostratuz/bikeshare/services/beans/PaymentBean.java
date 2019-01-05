@@ -50,6 +50,8 @@ public class PaymentBean extends EntityBean<Payment> {
             from.setFunds(from.getFunds().subtract(payment.getAmount()));
             to.setFunds(to.getFunds().add(payment.getAmount()));
 
+            log.info("Payment was made, amount: " + payment.getAmount().toString());
+
             userBean.update(payment.getFromUserId(), from);
             userBean.update(payment.getToUserId(), to);
 

@@ -36,6 +36,6 @@ public class Payment {
         private Integer rideId;
 
         //  Payment amount
-        @Column(nullable = false)
+        @Column(nullable = false, precision = 2, scale = 2)
         private BigDecimal amount;
 }

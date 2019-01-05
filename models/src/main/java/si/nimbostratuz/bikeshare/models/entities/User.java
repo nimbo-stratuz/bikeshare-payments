@@ -33,7 +33,7 @@ public class User {
     @Column(name = "is_renting", nullable = false)
     private Boolean isRenting;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 2, scale = 2)
     private BigDecimal funds;
 
 }
