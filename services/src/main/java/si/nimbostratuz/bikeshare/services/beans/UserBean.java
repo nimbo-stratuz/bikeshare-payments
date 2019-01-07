@@ -7,6 +7,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.NotFoundException;
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -70,6 +71,30 @@ public class UserBean extends  EntityBean<User> {
         }
 
         return User;
+    }
+
+    /**
+     *
+     * @param userId ID of the user which will receive the bonus.
+     * @param bonus Bonus amount - BigDecimal type
+     * @return successfull - true/false
+     */
+    public boolean applyBonus(Integer userId, BigDecimal bonus) {
+        User originalUser = this.get(userId);
+
+        try {
+            beginTx();
+            originalUser.setFunds(originalUser.getFunds().add(bonus));
+            em.merge(originalUser);
+            commitTx();
+        } catch (Exception e) {
+            rollbackTx();
+            log.throwing(UserBean.class.getName(), "Failed bonus apply.", e);
+            return false;
+            //throw new BadRequestException("Failed bonus apply.");
+        }
+        return true;
+
     }
 
     @Override

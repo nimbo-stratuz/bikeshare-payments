@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.math.BigDecimal;
 
 @ApplicationScoped
 @Path("users")
@@ -46,5 +47,11 @@ public class UsersResource {
         userBean.delete(id);
 
         return Response.status(Response.Status.NO_CONTENT).build();
+    }
+
+    @POST
+    @Path("give-bonus/{id}")
+    public Response giveBonusToUser(@PathParam("id") Integer userId, BigDecimal bonus) {
+        return Response.ok(userBean.applyBonus(userId, bonus)).build();
     }
 }

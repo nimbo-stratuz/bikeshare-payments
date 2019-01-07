@@ -13,7 +13,7 @@ spec:
         app: bikeshare-payments
     spec:
       containers:
-      - image: nimbostratuz/bikeshare-payments:0.5
+      - image: nimbostratuz/bikeshare-payments:0.6
         name: bikeshare-payments
         env:
         - name: KUMULUZEE_DISCOVERY_CLUSTER
